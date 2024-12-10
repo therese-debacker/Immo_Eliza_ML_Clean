@@ -51,10 +51,10 @@ Implements a linear regression model, evaluates it using metrics (MAE, RMSE, MAP
 4. data-analysis
 Graphs and analysis that helps in choosing the columns that will be used in the linear regression.
 
-Dependencies
+Dependencies :
 Python 3.8+
 pandas
 numpy
 scikit-learn
-matplotlib
+matplotlib <br>
 For detailed dependencies, see requirements.txt.
