@@ -18,10 +18,10 @@ bash
 Copier le code
 pip install -r requirements.txt
 Ensure the raw datasets are in the data/ directory.
+
 2. Run the Pipeline
 Execute the pipeline by running:
 python main.py
-
 This script performs the following steps:
 Merges and cleans the datasets.
 Preprocesses the data (handles outliers, missing values, and categorical variables).
@@ -33,12 +33,12 @@ Processed Dataset: data/dataset-preprocessed.csv
 Model Evaluation: Metrics printed in the console.
 Visualization: A scatter plot comparing predicted and real values saved in the graphs/ folder.
 
-5. Example Dataset
+4. Example Dataset
 Ensure your raw datasets have columns like:
 Price, Property type, Living area, Building condition, Zip code, and more.
 Refer to the project scripts for detailed dataset expectations.
 
-Modules Overview
+### **2. Modules Overview ** 
 1. cleaning_datasets.py
 Handles merging and cleaning of multiple datasets, renames columns, and ensures consistent formatting.
 
