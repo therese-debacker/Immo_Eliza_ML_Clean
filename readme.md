@@ -38,7 +38,7 @@ Ensure your raw datasets have columns like:
 Price, Property type, Living area, Building condition, Zip code, and more.
 Refer to the project scripts for detailed dataset expectations.
 
-### **2. Modules Overview ** 
+### **2. Modules Overview** 
 1. cleaning_datasets.py
 Handles merging and cleaning of multiple datasets, renames columns, and ensures consistent formatting.
 
