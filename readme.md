@@ -5,8 +5,6 @@ This project predicts real estate prices using a linear regression model. It com
 ## **Project Structure**
 ├── data/ # Folder for raw and processed datasets ├── graphs/ # Folder for generated plots ├── main.py # Main script to execute the pipeline ├── cleaning_datasets.py # Module for data cleaning and merging ├── cleaning_feature_engineering.py # Module for feature engineering ├── linear_regression_model.py # Module for training and evaluating the model ├── requirements.txt # List of dependencies └── README.md # Project documentation
 
-bash
-Copier le code
 
 ## **How to Use**
 
@@ -22,23 +20,21 @@ pip install -r requirements.txt
 Ensure the raw datasets are in the data/ directory.
 2. Run the Pipeline
 Execute the pipeline by running:
-
-bash
-Copier le code
 python main.py
-This script performs the following steps:
 
+This script performs the following steps:
 Merges and cleans the datasets.
 Preprocesses the data (handles outliers, missing values, and categorical variables).
 Trains a linear regression model.
 Saves cleaned data, metrics, and visualizations.
+
 3. Outputs
 Processed Dataset: data/dataset-preprocessed.csv
 Model Evaluation: Metrics printed in the console.
 Visualization: A scatter plot comparing predicted and real values saved in the graphs/ folder.
-4. Example Dataset
-Ensure your raw datasets have columns like:
 
+5. Example Dataset
+Ensure your raw datasets have columns like:
 Price, Property type, Living area, Building condition, Zip code, and more.
 Refer to the project scripts for detailed dataset expectations.
 
@@ -51,6 +47,9 @@ Includes functions for handling outliers, replacing missing values, and transfor
 
 3. linear_regression_model.py
 Implements a linear regression model, evaluates it using metrics (MAE, RMSE, MAPE, R²), and generates visualizations.
+
+4. data-analysis
+Graphs and analysis that helps in choosing the columns that will be used in the linear regression.
 
 Dependencies
 Python 3.8+
