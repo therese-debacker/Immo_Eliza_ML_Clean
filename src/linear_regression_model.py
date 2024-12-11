@@ -1,5 +1,4 @@
 # Import libraries & dataset
-# import shap
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -7,7 +6,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LinearRegression 
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
-
 
 class LinearRegressionModel:
     """ 
@@ -17,7 +15,8 @@ class LinearRegressionModel:
         """
         Initialize the LinearRegression class with the dataset.
         :param df: dataframe containing features and the target variable.
-
+        :param X: features set
+        :param y: target values corresponding to the features
         """
         # Dataframe, features (X), target(y)
         self.df = df
@@ -120,22 +119,3 @@ class LinearRegressionModel:
         plt.ylabel('Predicted values')
         plt.title('Predicted vs real values')
         plt.savefig(f'./graphs/prediction-vs-testdata.png')
-
-
-
-# # Get coefficients
-# coefficients = regression.coef_
-
-# # Display feature importance
-# features = [f'Feature {i}' for i in range(X.shape[1])]
-# importance_df = pd.DataFrame({'Feature': features, 'Importance': coefficients})
-# importance_df.sort_values(by='Importance', ascending=False, inplace=True)
-
-# plt.bar(importance_df['Feature'], importance_df['Importance'])
-# plt.xlabel('Feature')
-# plt.ylabel('Coefficient Value')
-# plt.title('Feature Importance in Linear Regression')
-# plt.xticks(rotation=90)    
-# plt.show()
-
-

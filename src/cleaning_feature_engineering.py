@@ -13,7 +13,7 @@ class FeatureEngineering:
 
     def remove_outliers(self) -> pd.DataFrame:
         """
-        Function that removes the selected outliers that were spotted
+        Function that removes the selected outliers that were spotted in the analysis
         :return: the new dataset without the outliers
         """
         self.df.drop(self.df[self.df['Price'] > 2500000].index, inplace = True)
@@ -25,15 +25,14 @@ class FeatureEngineering:
         self.df.drop(self.df[(self.df['Property'] != 'House') & (self.df['Property'] != 'Apartment')].index, inplace = True)
         return self.df
 
-    def remove_rows(self) -> pd.DataFrame:
+    def remove_rows(self, column: str) -> pd.DataFrame:
         """
         Function that removes rows with missing values in specific columns
         :return: a dataframe with missing values in specific columns removed
         """
-        self.df.dropna(subset=['Living area'], inplace=True)
+        self.df.dropna(subset=[column], inplace=True)
         return self.df
 
-    # Too many missing values in surface of the plot --> replacing by the median (not mean because of outliers)
     def replace_navalues(self) -> pd.DataFrame:
         """
         Function that replaces missing values in specific columns using the median
@@ -52,15 +51,6 @@ class FeatureEngineering:
         self.df.drop(self.df[self.df['Building condition'] == 'Not mentioned'].index, inplace = True)
         self.df['Building condition'] = self.df['Building condition'].replace({'As new':6,'Just renovated':5,'Good':4,'To be done up':3,'To renovate':2,'To restore':1})
         return self.df
-
-    # def removing_columns(self, columns_to_drop: list[str]) -> pd.DataFrame:
-    #     """
-    #     Function that removes the columns that we won't use for the linear regression model
-    #     :param columns_to_drop: a list of the column names to drop 
-    #     :return: the dataframe with the useful columns
-    #     """
-    #     self.df.drop(columns=columns_to_drop, inplace=True)
-    #     return self.df
     
     # Transform categorical columns into new columns of 1/0
     def transform_categorical_values(self, categorical_columns: list[str]) -> pd.DataFrame:
