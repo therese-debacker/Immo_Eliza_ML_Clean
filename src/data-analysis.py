@@ -10,17 +10,16 @@ def create_final_dataset() -> pd.DataFrame:
     Function that creates the dataset with all the data gathered
     :return: final dataframe that will be analysed
     """
-    datapath = './data/'
-    cleaner = CleaningDatasets(datapath)
+    cleaner = CleaningDatasets()
 
     # Import all CSV files
-    df = pd.read_csv(f'{datapath}precleaned-dataset-immoweb.csv')
-    zip_code = pd.read_csv(f'{datapath}code-nis-zip-code.csv')
-    income_median = pd.read_csv(f'{datapath}median-income-2022.csv')
-    density_population = pd.read_csv(f'{datapath}density-population.csv')
-    income_mean = pd.read_csv(f'{datapath}mean-income-2022.csv')
-    surface_area = pd.read_csv(f'{datapath}surface-area-2024-district.csv', header=None)
-    median_price = pd.read_csv(f'{datapath}sales-real-estates-belgium-district.csv')
+    df = pd.read_csv(f'./data/precleaned-dataset-immoweb.csv')
+    zip_code = pd.read_csv(f'./data/code-nis-zip-code.csv')
+    income_median = pd.read_csv(f'./data/median-income-2022.csv')
+    density_population = pd.read_csv(f'./data/density-population.csv')
+    income_mean = pd.read_csv(f'./data/mean-income-2022.csv')
+    surface_area = pd.read_csv(f'./data/surface-area-2024-district.csv', header=None)
+    median_price = pd.read_csv(f'./data/sales-real-estates-belgium-district.csv')
 
     # Cleaning of median_price dataframe : remove rows, columns, rename columns, create new columns
     median_price = cleaner.drop_rows(median_price, (median_price['année'] != 2023))
@@ -143,7 +142,7 @@ def dataset_check_graphs_info(part: str):
     yticks = np.arange(0, max_price + step, step)
     plt.yticks(yticks, labels=[f"{int(y):,}" for y in yticks]) 
     plt.grid(alpha=0.5, linestyle='--')
-    plt.savefig(f"./graphs/boxplot-price.png")
+    plt.savefig(f"./graphs/boxplot-price-{part}.png")
 
 dataset_check_graphs_info("one")
 
