@@ -1,16 +1,19 @@
-# Import necessary libraries and dataset
+# Import necessary libraries and classes
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 from cleaning_datasets import CleaningDatasets
 
-def create_final_dataset(): 
+def create_final_dataset() -> pd.DataFrame: 
     """
     Function that creates the dataset with all the data gathered
+    :return: final dataframe that will be analysed
     """
     datapath = './data/'
     cleaner = CleaningDatasets(datapath)
+
+    # Import all CSV files
     df = pd.read_csv(f'{datapath}precleaned-dataset-immoweb.csv')
     zip_code = pd.read_csv(f'{datapath}code-nis-zip-code.csv')
     income_median = pd.read_csv(f'{datapath}median-income-2022.csv')
@@ -19,7 +22,7 @@ def create_final_dataset():
     surface_area = pd.read_csv(f'{datapath}surface-area-2024-district.csv', header=None)
     median_price = pd.read_csv(f'{datapath}sales-real-estates-belgium-district.csv')
 
-    # Cleaning of median_price dataframe
+    # Cleaning of median_price dataframe : remove rows, columns, rename columns, create new columns
     median_price = cleaner.drop_rows(median_price, (median_price['année'] != 2023))
     columns_drop_medianprice = ['localité', 'année', 'période','prix premier quartile(€)-maison', 'prix troisième quartile(€)-maison','prix premier quartile(€)-appartement',
        'prix troisième quartile(€)-appartement', 'Unnamed: 12', 'Unnamed: 13',
@@ -38,14 +41,12 @@ def create_final_dataset():
     median_price = cleaner.new_columns_mean(median_price,'refnis', 'apartment-median-price','apartment-median-price')
     median_price = median_price.drop_duplicates()
 
-    # Cleaning of surface_area dataframe
+    # Cleaning of surface_area dataframe : remove columns, drop rows, rename columns, create new columns
     surface_area.columns = ['refnis','locality', 'rubrique', 'rubrique detail', 'number-parcels', 'surface-area-taxable', 'surface-area-exonerate', 
                              'surface-area-total', 'surface-area-promille']
     surface_area_columns= ['locality', 'surface-area-taxable', 'surface-area-exonerate', 
                            'surface-area-promille']	
-
     surface_area = cleaner.drop_columns(surface_area, surface_area_columns)
-    
     surface_area_total = cleaner.drop_rows(surface_area, (surface_area['rubrique'] != '6TOT'))
     surface_area_built = cleaner.drop_rows(surface_area, (surface_area['rubrique'] != '2TOT'))
     surface_area_land = cleaner.drop_rows(surface_area, (surface_area['rubrique'] != '1TOT'))
@@ -69,13 +70,15 @@ def create_final_dataset():
     merged_df_surface_area = cleaner.merging_dataset(merged_df_avgincome, surface_area_total,'CD_DSTR_REFNIS', 'refnis')
     merged_df_median_price = cleaner.merging_dataset(merged_df_surface_area, median_price,'CD_DSTR_REFNIS', 'refnis')
 
-    # Removing unuseful columns & rename some others
+    # Removing unuseful columns
     columns_to_drop = ['CD_RGN_REFNIS','TX_RGN_DESCR_NL','TX_RGN_DESCR_FR', 'TX_RGN_DESCR_EN', 'TX_RGN_DESCR_DE', 'CD_PROV_REFNIS', 'TX_PROV_DESCR_NL',
                              'TX_PROV_DESCR_FR', 'TX_PROV_DESCR_EN','TX_PROV_DESCR_DE','TX_DSTR_DESCR_NL','TX_DSTR_DESCR_FR','TX_DSTR_DESCR_EN','TX_DSTR_DESCR_DE',
                              'TX_MUNTY_DESCR_EN','TX_MUNTY_DESCR_DE','MS_Q1','MS_Q3','MS_NBR_ELIGIBLE','MS_NBR_NOT_ELIGIBLE','MS_PERC_NOT_ELIGIBLE','MS_PERC_IOE_HH',
                              'MS_INT_QUART_DIFF', 'Commune', 'CD_YEAR','TX_MUNTY_DESCR_NL','TX_MUNTY_DESCR_FR','Gemeentenaam', 'Nom commune','CD_MUNTY_REFNIS', 
                              'Refnis code', 'number-parcels-total', 'refnis_y','refnis_x', 'men','women', 'code-ins']
     merged_df_median_price = cleaner.drop_columns(merged_df_median_price, columns_to_drop)
+    
+    # Rename some columns
     merged_median_price = {'total': 'population','MS_MEDIAN': 'median-income','Nom': 'commune','Revenu': 'mean-income', 'MS_ADMIN_AROP': 'poverty-chance', 
                             'CD_DSTR_REFNIS':'district'}
     merged_df_median_price = cleaner.rename_columns(merged_df_median_price, merged_median_price)
@@ -103,6 +106,7 @@ def create_final_dataset():
 
     return final_df
 
+# Creation of the dataset to analyze
 df = create_final_dataset()
 
 # Getting a first look at the dataset to choose the features will use in our model and know what changes we have to make
