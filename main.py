@@ -2,12 +2,14 @@ import pandas as pd
 from src.cleaning_datasets import CleaningDatasets
 from src.cleaning_feature_engineering import FeatureEngineering
 from src.linear_regression_model import LinearRegressionModel
+from time import perf_counter
 
 def main():
     """
     Main script to clean, preprocess, and train a linear regression model
     for predicting real estate prices.
     """
+    start_time = perf_counter()
     cleaner = CleaningDatasets()
     
     # Import the necessary CSV files
@@ -20,13 +22,11 @@ def main():
     # Cleaning of the median_price dataframe
     median_price = cleaner.drop_rows(median_price, (median_price['année'] != 2023))
     columns_drop_medianprice = ['localité', 'année', 'période','prix premier quartile(€)-maison', 'prix troisième quartile(€)-maison','prix premier quartile(€)-appartement',
-       'prix troisième quartile(€)-appartement', 'Unnamed: 12', 'Unnamed: 13',
+       'prix troisième quartile(€)-appartement', 'Unnamed: 12', 'Unnamed: 13', 'nombre transactions-appartement', 'nombre transactions - maison',
        'Unnamed: 14', '0']
     median_price = cleaner.drop_columns(median_price, columns_drop_medianprice)
     new_names_median_price = {
-        'nombre transactions - maison': 'nb_transactions_house',
         'prix médian(€)-maison': 'house-median-price',
-        'nombre transactions-appartement': 'nb_transactions_apartment',
         'prix médian(€)-appartement': 'apartment-median-price'
         }  
     median_price = cleaner.rename_columns(median_price, new_names_median_price)
@@ -75,19 +75,19 @@ def main():
     # Removing additional columns that won't be necessary
     columns_to_drop =  ['Facades','Equipped kitchen', 'Furnished', 'Fireplace','Garden', 'Terrace', 'Terrace surface','Region', 'Bedrooms',
                     'Zip code', 'Locality', 'median-income', 'commune', 'Province','Garden surface','poverty-chance', 'Property', 
-                    'nb_transactions_house', 'nb_transactions_apartment', 'house-median-price', 'apartment-median-price', 'refnis' ]
+                    'house-median-price', 'apartment-median-price', 'refnis' ]
     final_df = cleaner.drop_columns(final_df, columns_to_drop)
 
     # Save the cleaned and preprocessed dataset
     final_df.to_csv(f'./data/dataset-preprocessed.csv', index=False)
-
     # Split the features and the target
     X = final_df.drop(columns=['Price'])
     y = final_df['Price']
-
+    print(final_df.shape)
     # Train the linear regression model and getting the metrics
     model_trainer = LinearRegressionModel(final_df, X, y)
     model_trainer.create_linear_model()
+    print(f"\nTime taken to from start to finish: {round(perf_counter()-start_time,3)} seconds.")
 
 if __name__ == "__main__":
     main()
