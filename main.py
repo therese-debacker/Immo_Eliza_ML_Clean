@@ -2,12 +2,14 @@ import pandas as pd
 from src.cleaning_datasets import CleaningDatasets
 from src.cleaning_feature_engineering import FeatureEngineering
 from src.linear_regression_model import LinearRegressionModel
+from time import perf_counter
 
 def main():
     """
     Main script to clean, preprocess, and train a linear regression model
     for predicting real estate prices.
     """
+    start_time = perf_counter()
     cleaner = CleaningDatasets()
     
     # Import the necessary CSV files
@@ -85,6 +87,7 @@ def main():
     # Train the linear regression model and getting the metrics
     model_trainer = LinearRegressionModel(final_df, X, y)
     model_trainer.create_linear_model()
+    print(f"\nTime taken to from start to finish: {round(perf_counter()-start_time,3)} seconds.")
 
 if __name__ == "__main__":
     main()
